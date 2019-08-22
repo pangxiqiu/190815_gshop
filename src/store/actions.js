@@ -5,13 +5,13 @@
 import {
   reqAddress,
   reqFoodTypes,
-  reqShops
+  reqShopList
 } from '../api'
 
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
-  RECEIVE_SHOPS
+  RECEIVE_SHOPLIST
 } from './mutation-types'
 
 export default {
@@ -32,8 +32,8 @@ export default {
   },
   // 异步获取商家列表
   async getShops ({commit, state}) {
-    const {latitude, longitude} = state
-    const result = await reqShops({latitude, longitude})
-    commit(RECEIVE_SHOPS, {shops: result.data})
+    const {longitude, latitude} = state
+    const result = await reqShopList({longitude, latitude})
+    commit(RECEIVE_SHOPLIST, {shoplist: result.data})
   }
 }
