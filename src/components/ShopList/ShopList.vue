@@ -17,7 +17,7 @@
             </section>
             <section class="shop_rating_order">
               <section class="shop_rating_order_left">
-                <Star :score="shop.rating" size="24"></Star>
+                <Star :score="shop.rating" :size="24"></Star>
                 <div class="rating_section">
                   {{shop.rating}}
                 </div>

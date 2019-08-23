@@ -3,12 +3,17 @@
     <section class="msite">
       <!--首页头部-->
       <HeaderTop :title="address.name">
-        <span class="header_search" slot="left">
+        <router-link class="header_search" slot="left" to="/search">
           <i class="iconfont icon-sousuo"></i>
-        </span>
-        <span class="header_login" slot="right">
-          <span class="header_login_text">登录|注册</span>
-        </span>
+        </router-link>
+        <router-link class="header_login" slot="right" :to="userInfo._id ? '/userinfo' : '/login'">
+          <span class="header_login_text" v-if="!userInfo._id">
+            登录|注册
+          </span>
+          <span class="header_login_text" v-else>
+            <i class="iconfont icon-wodexiao"></i>
+          </span>
+        </router-link>
       </HeaderTop>
       <!--首页导航-->
       <nav class="msite_nav">
@@ -31,7 +36,7 @@
       <!--首页附近商家-->
       <div class="msite_shop_list">
         <div class="shop_header">
-          <i class="iconfont icon-xuanxiang"></i>
+          <i class="iconfont icon-caidan"></i>
           <span class="shop_header_title">附近商家</span>
         </div>
         <ShopList></ShopList>
@@ -58,7 +63,7 @@ export default {
     ShopList
   },
   computed: {
-    ...mapState(['address', 'categorys']),
+    ...mapState(['address', 'categorys', 'userInfo']),
     categorysArr () {
       const {categorys} = this
       // 空的二维数组
@@ -105,7 +110,11 @@ export default {
   @import '../../common/stylus/mixins.styl'
   .msite  //首页
     width 100%
-
+    .iconfont
+      font-size 22.5px
+      color #e4e4e4
+      .icon-sousuo
+        color #e4e4e4
     .msite_nav
       bottom-border-1px(#e4e4e4)
       margin-top 45px

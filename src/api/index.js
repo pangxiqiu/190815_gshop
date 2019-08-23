@@ -12,9 +12,9 @@ export const reqShopList = ({latitude, longitude}) => ajax(BASE_URL + '/shops', 
 // [4、根据经纬度和关键字搜索商铺列表]
 export const reqShops = ({geohash, keyword}) => ajax(BASE_URL + '/search_shops', {geohash, keyword})
 // [5、获取一次性验证码]
-export const reqCaptcha = () => ajax(BASE_URL + '/captcha')
+// export const reqCaptcha = () => ajax(BASE_URL + '/captcha')
 // [6、用户名密码登陆]
-export const reqPwdLogin = (name, pwd, captcha) => ajax(BASE_URL + '/login_pwd', { name, pwd, captcha }, 'POST')
+export const reqPwdLogin = ({name, pwd, captcha}) => ajax(BASE_URL + '/login_pwd', { name, pwd, captcha }, 'POST')
 // [7、发送短信验证码]
 export const reqSendCode = phone => ajax(BASE_URL + '/sendcode', {phone})
 // [8、手机号验证码登陆]
