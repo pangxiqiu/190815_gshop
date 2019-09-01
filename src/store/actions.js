@@ -21,7 +21,9 @@ import {
   RESET_USERINFO,
   RECEIVE_GOODS,
   RECEIVE_RATINGS,
-  RECEIVE_INFO
+  RECEIVE_INFO,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
 } from './mutation-types'
 
 export default {
@@ -92,6 +94,14 @@ export default {
       commit(RECEIVE_GOODS, {goods})
       // 如果组件中传递了接收消息的回调函数, 数据更新后, 调用回调通知调用的组件
       cb && cb()
+    }
+  },
+  // 同步cartControl的food的count
+  updateFoodCount ({commit}, {food, value}) {
+    if (value) { // 增加
+      commit(INCREMENT_FOOD_COUNT, {food})
+    } else { // 减少
+      commit(DECREMENT_FOOD_COUNT, {food})
     }
   }
 }

@@ -3,7 +3,8 @@
     <div class="goods">
       <div class="menu-wrapper">
         <ul>
-          <li class="menu-item current" v-for="(good, index) in goods" :key="index">
+          <li class="menu-item" v-for="(good, index) in goods" :key="index"
+              :class="{current: index === currentIndex}" @click="clickMenuItem(index)">
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
@@ -16,7 +17,8 @@
           <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index">
+              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index"
+              @click="showFood(food)">
                 <div class="icon">
                   <img width="57" height="57"
                        :src="food.icon">
@@ -30,10 +32,10 @@
                   </div>
                   <div class="price">
                     <span class="now">￥{{food.price}}</span>
-                    <span class="old" v-if="food.oldPrice">￥{{food.price}}</span>
+                    <span class="old" v-if="food.oldPrice">￥{{food.oldprice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    CartControl
+                    <CartControl :food="food"></CartControl>
                   </div>
                 </div>
               </li>
@@ -42,19 +44,27 @@
         </ul>
       </div>
     </div>
+    <Food :food="food" ref="food"></Food>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
 import {mapState} from 'vuex'
+import CartControl from '../../../components/CartControl/CartControl'
+import Food from '../../../components/Food/Food'
 export default {
   name: 'ShopGoods',
   data () {
     return {
       scrollY: 0, // 右侧滑动的Y轴坐标
-      tops: [] // 右侧所有分类li的top值组成的数组
+      tops: [], // 右侧所有分类li的top值组成的数组
+      food: {} // 需要i点击的food
     }
+  },
+  components: {
+    CartControl,
+    Food
   },
   /* eslint-disable no-new */
   mounted () {
@@ -65,25 +75,22 @@ export default {
       })
     })
   },
-  computed: {
-    ...mapState(['goods'])
-    // 计算当前分类的下标
-    // currentIndex () {
-    //
-    // }
-  },
   methods: {
     initScroll () {
       new BScroll('.menu-wrapper', {
         click: true
       })
-      const foodsScroll = new BScroll('.foods-wrapper', {
-        probeType: 3,
+      this.foodsScroll = new BScroll('.foods-wrapper', {
+        probeType: 2,
         click: true
       })
-      foodsScroll.on('scroll', ({x, y}) => {
-        console.log(x, y)
+      this.foodsScroll.on('scroll', ({x, y}) => {
         this.scrollY = Math.abs(y)
+      })
+      // 监视滑动结束
+      this.foodsScroll.on('scrollEnd', ({x, y}) => {
+        console.log('滑动结束', x, y)
+        this.scrollY = Math.abs(y) // 解决惯性滑动更新
       })
     },
     initTops () {
@@ -95,7 +102,28 @@ export default {
         top += li.clientHeight
         tops.push(top)
       })
+      this.tops = tops
       console.log(tops)
+    },
+    clickMenuItem (index) {
+      console.log(index)
+      const top = this.tops[index]
+      this.scrollY = top
+      this.foodsScroll.scrollTo(0, -top, 300)
+    },
+    showFood (food) {
+      this.food = food
+      this.$refs.food.ChangeShow()
+    }
+  },
+  computed: {
+    ...mapState(['goods']),
+    // 计算当前分类的下标
+    currentIndex () {
+      const index = this.tops.findIndex((top, index) => {
+        return this.scrollY >= top && this.scrollY < this.tops[index + 1]
+      })
+      return index
     }
   }
 }
