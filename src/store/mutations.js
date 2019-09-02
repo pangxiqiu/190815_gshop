@@ -12,7 +12,8 @@ import {
   RECEIVE_RATINGS,
   RECEIVE_INFO,
   DECREMENT_FOOD_COUNT,
-  INCREMENT_FOOD_COUNT
+  INCREMENT_FOOD_COUNT,
+  CLEAR_CART
 } from './mutation-types'
 export default {
   [RECEIVE_ADDRESS] (state, {address}) {
@@ -42,14 +43,25 @@ export default {
   [DECREMENT_FOOD_COUNT] (state, {food}) {
     if (food.count) {
       food.count--
+      if (food.count === 0) {
+        state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
+      }
     }
   },
   [INCREMENT_FOOD_COUNT] (state, {food}) {
     if (!food.count) {
       // food.count = 1
       Vue.set(food, 'count', 1)
+      // 将food添加到cartFoods中
+      state.cartFoods.push(food)
     } else {
       food.count++
     }
+  },
+  [CLEAR_CART] (state) {
+    // 将所有 food 的 count 置为 0
+    state.cartFoods.forEach(food => food.count = 0)
+    // 将购物车重置为空数组
+    state.cartFoods = []
   }
 }

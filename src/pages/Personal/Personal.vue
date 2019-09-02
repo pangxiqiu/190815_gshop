@@ -42,7 +42,7 @@
         <!-- 我的订单 -->
         <a href='javascript:' class="my_order">
             <span>
-              <i class="iconfont icon-order-s"></i>
+              <i class="iconfont icon-dingdan2"></i>
             </span>
           <div class="my_order_div">
             <span>我的订单</span>
@@ -54,7 +54,7 @@
         <!-- 积分商城 -->
         <a href='javascript:' class="my_order">
             <span>
-              <i class="iconfont icon-jifen"></i>
+              <i class="iconfont icon-pre_icon_wodejifen"></i>
             </span>
           <div class="my_order_div">
             <span>积分商城</span>
@@ -66,7 +66,7 @@
         <!-- 硅谷外卖会员卡 -->
         <a href="javascript:" class="my_order">
             <span>
-              <i class="iconfont icon-vip"></i>
+              <i class="iconfont icon-huiyuan"></i>
             </span>
           <div class="my_order_div">
             <span>硅谷外卖会员卡</span>
@@ -270,11 +270,11 @@ export default {
           >.iconfont
             margin-left -10px
             font-size 30px
-          .icon-order-s
+          .icon-dingdan2
             color #02a774
-          .icon-jifen
+          .icon-pre_icon_wodejifen
             color #ff5f3e
-          .icon-vip
+          .icon-huiyuan
             color #f90
           .icon-fuwu
             color #02a774
