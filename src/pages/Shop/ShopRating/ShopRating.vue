@@ -59,7 +59,7 @@
                 <span class="iconfont" :class="rating.rateType === 0 ? 'icon-zan2' : 'icon-caishixin-'"></span>
                 <span class="item" v-for="(rate, index) in rating.recommend" :key="index">{{rate}}</span>
               </div>
-              <div class="time">{{rating.rateTime}}</div>
+              <div class="time">{{rating.rateTime | data-format}}</div>
             </div>
           </li>
         </ul>

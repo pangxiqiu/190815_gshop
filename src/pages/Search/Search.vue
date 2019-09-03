@@ -1,47 +1,29 @@
 <template>
   <!--搜索-->
   <section class="search">
-    <header class="header">
-      <a class="header_title">
-        <span class="header_title_text ellipsis">搜索</span>
-      </a>
-    </header>
-    <form class="search_form">
-      <input type="search" placeholder="请输入商家名称" class="search_input">
+    <HeaderTop title="搜索"/>
+    <form class="search_form" @submit.prevent="search">
+      <input type="search" placeholder="请输入商家名称" class="search_input" v-model="keyword">
       <input type="submit" class="search_submit">
     </form>
     <section class="list">
       <ul class="list_container">
-        <li class="list_li">
+        <span>{{searchShops.message}}</span>
+        <router-link :to="{path:'/shop', query:{id:item.id}}" tag="li" v-for="item in searchShops" :key="item.id" class="list_li">
           <section class="item_left">
-            <img src="http://cangdu.org:8001/img/16265a70fe27854.jpg"
-                 class="restaurant_img">
+            <img :src="imgBaseUrl + item.image_path" class="restaurant_img">
           </section>
           <section class="item_right">
             <div class="item_right_text">
               <p>
-                <span>aaa</span>
+                <span>{{item.name}}</span>
               </p>
-              <p>月售 671 单</p>
-              <p>20 元起送 / 距离 1058.2 公里</p>
+              <p>月售 {{item.month_sales||item.recent_order_num}} 单</p>
+              <p>{{item.delivery_fee||item.float_minimum_order_amount}} 元起送 / 距离
+                {{item.distance}}</p>
             </div>
           </section>
-        </li>
-        <li class="list_li">
-          <section class="item_left">
-            <img src="http://cangdu.org:8001/img/16265a70fe27854.jpg"
-                 class="restaurant_img">
-          </section>
-          <section class="item_right">
-            <div class="item_right_text">
-              <p>
-                <span>aaa</span>
-              </p>
-              <p>月售 671 单</p>
-              <p>20 元起送 / 距离 1058.2 公里</p>
-            </div>
-          </section>
-        </li>
+        </router-link>
       </ul>
     </section>
   </section>
@@ -49,18 +31,32 @@
 
 <script>
 import HeaderTop from '../../components/HeaderTop/HeaderTop'
+import {mapState} from 'vuex'
 export default {
   name: 'Search',
-  components: {HeaderTop},
-  comments: {
-    HeaderTop
-  }
+  data () {
+    return {
+      keyword: ''
+    }
+  },
+  computed: {
+    ...mapState(['searchShops'])
+  },
+  methods: {
+    search () {
+      const keyword = this.keyword.trim()
+      if (keyword) {
+        this.$store.dispatch('getSearchShops', keyword)
+      }
+    }
+  },
+  components: {HeaderTop}
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixins.styl"
-  .search  //搜索
+  .search  // 搜索
     width 100%
     .header
       background-color #02a774

@@ -11,5 +11,6 @@ export default {
   goods: [], // 商品列表
   ratings: [], // 商家评价列表
   info: {}, // 商家信息,
-  cartFoods: []
+  cartFoods: [], // 购物车食品信息
+  searchShops: [] // 搜索商铺列表信息
 }
